@@ -944,7 +944,7 @@ IAsyncAction RNFSManager::ProcessDownloadRequestAsync(RN::ReactPromise<RN::JSVal
                 RN::JSValueObject{
                     { "jobId", jobId },
                     { "statusCode", (int)response.StatusCode() },
-                    { "contentLength", contentLength.Type() == PropertyType::UInt64 ? RN::JSValue(contentLength.Value()) : RN::JSValue{nullptr} },
+                    { "contentLength", RN::JSValue{nullptr} },
                     { "headers", std::move(headersMap) },
                 });
         }
@@ -959,7 +959,7 @@ IAsyncAction RNFSManager::ProcessDownloadRequestAsync(RN::ReactPromise<RN::JSVal
         IOutputStream outputStream{ stream.GetOutputStreamAt(0) };
 
         auto contentStream = co_await response.Content().ReadAsInputStreamAsync();
-        auto contentLengthForProgress = contentLength.Type() == PropertyType::UInt64 ? contentLength.Value() : -1;
+        auto contentLengthForProgress = -1;
         
         Buffer buffer{ 8 * 1024 };
         uint32_t read = 0;
